@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+FOUNDATION_EXPORT const NSInteger kApplicationKeyWindowTag;
 
 typedef UIViewController *(^ActiveTopController)(void);
 typedef UINavigationController *(^ActiveNavigationController)(void);

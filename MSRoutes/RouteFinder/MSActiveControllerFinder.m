@@ -8,6 +8,8 @@
 
 #import "MSActiveControllerFinder.h"
 
+const NSInteger kApplicationKeyWindowTag = 991199;
+
 static MSActiveControllerFinder *_sharedFinder = nil;
 
 @implementation MSActiveControllerFinder
@@ -85,13 +87,20 @@ static MSActiveControllerFinder *_sharedFinder = nil;
  }
 
 - (UITabBarController *)defaultActiveTabBarController {
-    UITabBarController *tabBarController = (UITabBarController *)[UIApplication sharedApplication].keyWindow.rootViewController;
+    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    for (UIWindow *window in [UIApplication sharedApplication].windows) {
+        if (window.tag == kApplicationKeyWindowTag) {
+            keyWindow = window;
+        }
+    }
+    
+    UITabBarController *tabBarController = (UITabBarController *)keyWindow.rootViewController;
     if ([tabBarController isKindOfClass:[UITabBarController class]]) {
         return tabBarController;
     }
+    
     return nil;
 }
-
 - (UINavigationController *)defaultActiveNavigationController {
     UITabBarController *tabBarController = [self defaultActiveTabBarController];
     UIViewController *presentedViewController = tabBarController.presentedViewController;
